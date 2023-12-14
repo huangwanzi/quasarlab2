@@ -4,12 +4,27 @@
       <q-input
         filled
         v-model="name"
+        label="ชื่อ - สกุล"
+        hint="ชื่อและสกุล"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || 'กรุณาพิมพ์ชื่อ']"
+      />
+      <q-input
+        filled
+        v-model="name"
+        label="君姓名 *"
+        hint="名字和姓氏"
+        lazy-rules
+        :rules="[(val) => (val && val.length > 0) || '請輸入您的姓名']"
+      />
+      <q-input
+        filled
+        v-model="name"
         label="Your name *"
         hint="Name and surname"
         lazy-rules
         :rules="[(val) => (val && val.length > 0) || 'Please type something']"
       />
-
       <q-input
         filled
         type="number"
@@ -45,8 +60,8 @@ import { ref } from "vue";
 export default {
   setup() {
     const $q = useQuasar();
+
     const name = ref(null);
-    const name1 = ref(null);
     const age = ref(null);
     const accept = ref(false);
     return {
@@ -59,14 +74,55 @@ export default {
             color: "red-5",
             textColor: "white",
             icon: "warning",
-            message: "คุณจำเป็นต้องยอมรับ",
+            message: "You need to accept the license and terms first",
           });
         } else {
           $q.notify({
             color: "green-4",
             textColor: "white",
             icon: "cloud_done",
-            message: "ข้อมูลได้รับการยืนยัน",
+            message: "Submitted",
+          });
+        }
+      },
+      onReset() {
+        name.value = null;
+        age.value = null;
+        accept.value = false;
+      },
+    };
+  },
+};
+</script>
+<script>
+import { useQuasar } from "quasar";
+import { ref } from "vue";
+
+export default {
+  setup() {
+    const $q = useQuasar();
+    const name1 = ref(null);
+    const name = ref(null);
+    const age = ref(null);
+    const accept = ref(false);
+    return {
+      name,
+      age,
+      accept,
+      onSubmit() {
+        if (accept.value !== true) {
+          $q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: "You need to accept the license and terms first",
+          });
+        } else {
+          $q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Submitted",
           });
         }
       },
